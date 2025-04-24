@@ -1,0 +1,26 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    age INT,
+    email VARCHAR(255)
+);
+
+ALTER DATABASE mydb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+DELIMITER //
+CREATE PROCEDURE generate_users()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    WHILE i <= 1000 DO
+        INSERT INTO users (name, age, email) 
+        VALUES (
+            CONCAT('User_', FLOOR(RAND() * 1000)),
+            FLOOR(RAND() * 80) + 18,  
+            CONCAT('user', i, '@example.com')
+        );
+        SET i = i + 1;
+    END WHILE;
+END //
+DELIMITER;
+
+CALL generate_users();
